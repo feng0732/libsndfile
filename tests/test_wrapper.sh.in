@@ -84,6 +84,7 @@ echo "Running end-to-end tests from tests/ directory."
 ./tests/external_libs_test@EXEEXT@
 ./tests/format_check_test@EXEEXT@
 ./tests/channel_test@EXEEXT@
+./tests/sample_frame_seek_test@EXEEXT@
 
 # The w64 G++ compiler requires an extra runtime DLL which we don't have,
 # so skip this test.

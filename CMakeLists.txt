@@ -1169,6 +1169,17 @@ if (BUILD_TESTING)
 		)
 	add_test (channel_test channel_test)
 
+	### sample_frame_seek_test
+
+	add_executable (sample_frame_seek_test tests/sample_frame_seek_test.c)
+	target_link_libraries (sample_frame_seek_test
+		PRIVATE
+			sndfile
+			test_utils
+			$<$<BOOL:${LIBM_REQUIRED}>:m>
+		)
+	add_test (sample_frame_seek_test sample_frame_seek_test)
+
 	### pcm_test
 
 	add_executable (pcm_test tests/pcm_test.c)
