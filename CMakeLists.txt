@@ -1226,6 +1226,14 @@ if (BUILD_TESTING)
 			$<$<BOOL:${LIBM_REQUIRED}>:m>
 		)
 
+	add_executable (wav_rf64_end_test tests/wav_rf64_end_test.c)
+	target_link_libraries (wav_rf64_end_test
+		PRIVATE
+			sndfile
+			test_utils
+			$<$<BOOL:${LIBM_REQUIRED}>:m>
+		)
+
 	add_executable (string_test tests/string_test.c)
 	target_link_libraries (string_test
 		PRIVATE
@@ -1415,6 +1423,7 @@ if (BUILD_TESTING)
 	add_test (string_test_wav string_test wav)
 	add_test (multi_file_test_wav multi_file_test wav)
 	add_test (chunk_test_wav chunk_test wav)
+	add_test (wav_rf64_end_test_wav wav_rf64_end_test wav)
 
 	### w64-tests
 
@@ -1438,6 +1447,7 @@ if (BUILD_TESTING)
 	add_test (string_test_rf64 string_test rf64)
 	add_test (peak_chunk_test_rf64 peak_chunk_test rf64)
 	add_test (chunk_test_rf64 chunk_test rf64)
+	add_test (wav_rf64_end_test_rf64 wav_rf64_end_test rf64)
 
 	### raw-tests
 	add_test (write_read_test_raw write_read_test raw)

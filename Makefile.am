@@ -222,7 +222,7 @@ check_PROGRAMS += tests/sfversion tests/floating_point_test tests/write_read_tes
 	tests/checksum_test tests/external_libs_test tests/rdwr_test tests/format_check_test $(CPP_TEST) \
 	tests/channel_test tests/long_read_write_test tests/stdin_test tests/stdout_test \
 	tests/dither_test tests/fix_this tests/largefile_test tests/benchmark tests/ogg_opus_test \
-	tests/mpeg_test
+	tests/mpeg_test tests/wav_rf64_end_test
 
 BUILT_SOURCES += \
 	tests/write_read_test.c \
