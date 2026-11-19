@@ -179,7 +179,7 @@ enum
 
 	SFC_SET_RAW_START_OFFSET		= 0x1090,
 
-	/* Commands reserved for dithering, which is not implemented. */
+	/* Commands for dithering on write. Dither on read is not implemented. */
 	SFC_SET_DITHER_ON_WRITE			= 0x10A0,
 	SFC_SET_DITHER_ON_READ			= 0x10A1,
 
@@ -407,7 +407,16 @@ typedef struct
 
 /*
 ** Enums and typedefs for adding dither on read and write.
-** Reserved for future implementation.
+** Dither on write is implemented; dither on read is currently not.
+**
+** When dither is enabled on write, noise is added immediately before
+** quantization whenever the source precision is greater than the target
+** PCM bit depth. The noise amplitude is scaled to the target least
+** significant bit and each channel uses an independent sequence.
+**
+** Set the level field to SFD_DEFAULT_LEVEL (0) for the standard level of
+** one target LSB peak to peak, or OR the type with SFD_CUSTOM_LEVEL and
+** provide an explicit level measured in target LSB units.
 */
 
 enum

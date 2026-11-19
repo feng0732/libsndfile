@@ -1072,6 +1072,17 @@ if (BUILD_TESTING)
 		)
 	add_test (checksum_test checksum_test)
 
+	### dither_test
+
+	add_executable (dither_test tests/dither_test.c)
+	target_link_libraries (dither_test
+		PRIVATE
+			sndfile
+			test_utils
+			$<$<BOOL:${LIBM_REQUIRED}>:m>
+		)
+	add_test (dither_test dither_test all)
+
 	### scale_clip_test
 
 	add_executable (scale_clip_test tests/scale_clip_test.c)

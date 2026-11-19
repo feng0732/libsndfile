@@ -1213,7 +1213,15 @@ sf_command	(SNDFILE *sndfile, int command, void *data, int datasize)
 		case SFC_SET_DITHER_ON_WRITE :
 			if (data == NULL || datasize != SIGNED_SIZEOF (SF_DITHER_INFO))
 				return (psf->error = SFE_BAD_COMMAND_PARAM) ;
-			memcpy (&psf->write_dither, data, sizeof (psf->write_dither)) ;
+			{	SF_DITHER_INFO *dinfo = (SF_DITHER_INFO*) data ;
+				int dither_type = dinfo->type & SFD_TYPEMASK ;
+
+				if (dither_type != 0 && dither_type != SFD_NO_DITHER &&
+						dither_type != SFD_WHITE && dither_type != SFD_TRIANGULAR_PDF)
+					return (psf->error = SFE_BAD_COMMAND_PARAM) ;
+
+				memcpy (&psf->write_dither, data, sizeof (psf->write_dither)) ;
+				} ;
 			if (psf->file.mode == SFM_WRITE || psf->file.mode == SFM_RDWR)
 				dither_init (psf, SFM_WRITE) ;
 			break ;

@@ -53,7 +53,7 @@ The available commands are as follows:
 | [SFC_SET_UPDATE_HEADER_AUTO](#sfc_set_update_header_auto)         | Update the file header on each write.                   |
 | [SFC_FILE_TRUNCATE](#sfc_file_truncate)                           | Truncate a file open for write or for read/write.       |
 | [SFC_SET_RAW_START_OFFSET](#sfc_set_raw_start_offset)             | Change the data start offset for raw files.             |
-| SFC_SET_DITHER_ON_WRITE                                           | Not implemented.                                        |
+| [SFC_SET_DITHER_ON_WRITE](#sfc_set_dither_on_write)                 | Set the dither used when writing.                        |
 | SFC_SET_DITHER_ON_READ                                            | Not implemented.                                        |
 | SFC_GET_DITHER_INFO_COUNT                                         | Not implemented.                                        |
 | SFC_GET_DITHER_INFO                                               | Not implemented.                                        |
@@ -1128,6 +1128,58 @@ sf_command (sndfile, SFC_GET_CLIPPING, NULL, 0) ;
 ### Return value
 
 Clipping mode (SF_TRUE or SF_FALSE).
+
+## SFC_SET_DITHER_ON_WRITE
+
+Set the type and level of the dither applied immediately before quantization
+when writing to an integer PCM file.
+
+Dither is only added when the precision of the data passed to a write function
+is greater than the target PCM bit depth. For example, writing 32 bit integer
+data to a 16 bit PCM file is dithered, while writing 16 bit data to a 16 bit
+PCM file or writing to a floating point container leaves the samples
+untouched. Each channel is dithered using an independent random sequence. The
+noise amplitude is measured in units of the target least significant bit
+(LSB).
+
+Dither can be enabled, disabled, or changed at any point between writes.
+After disabling it with a type of `SFD_NO_DITHER`, subsequent samples are
+bit identical to those produced by a file that was never dithered.
+
+### Parameters
+
+sndfile
+: A valid SNDFILE* pointer
+
+cmd
+: SFC_SET_DITHER_ON_WRITE
+
+data
+: A pointer to an SF_DITHER_INFO struct
+
+datasize
+: sizeof (SF_DITHER_INFO)
+
+The `type` field is one of `SFD_NO_DITHER`, `SFD_WHITE` (white noise) or
+`SFD_TRIANGULAR_PDF` (triangular probability density function). With
+`SFD_DEFAULT_LEVEL` (the default) the level is one target LSB peak to peak.
+OR the type with `SFD_CUSTOM_LEVEL` and set the `level` field to an explicit
+amplitude measured in target LSB units.
+
+### Examples
+
+```c
+SF_DITHER_INFO dither_info ;
+
+memset (&dither_info, 0, sizeof (dither_info)) ;
+dither_info.type = SFD_TRIANGULAR_PDF ;
+
+sf_command (sndfile, SFC_SET_DITHER_ON_WRITE, &dither_info, sizeof (dither_info)) ;
+```
+
+### Return value
+
+Zero on success or non-zero if the parameters are invalid.
 
 ## SFC_GET_EMBED_FILE_INFO
 
